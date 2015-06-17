@@ -4,6 +4,19 @@
 This plugin uses [sass.js](https://github.com/medialize/sass.js) to do the heavy lifting.  Using sass.js gives us the ability to transpile scss right in the browser.
 
 
+### Install
+
+```
+npm install sassy-bits -D
+```
+
+For sassy-bits to work correctly, you must also install `sass.js`.
+
+```
+npm install sass.js -D
+```
+
+
 ### Sample configuration
 
 ``` javascript
