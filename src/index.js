@@ -43,8 +43,8 @@ function _run(moduleMeta, options) {
 }
 
 
-function transformSass(moduleMeta) {
-  return _run(moduleMeta, this.options);
+function transformSass(moduleMeta, options) {
+  return _run(moduleMeta, options);
 }
 
 
