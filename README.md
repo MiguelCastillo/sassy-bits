@@ -22,6 +22,11 @@ npm install sass.js -D
 ``` javascript
 /* jshint unused: false, undef: false */
 var System = (function() {
+
+  // Get the extension rule matches
+  var extension = bitimports.Rule.matcher.extension;
+
+  // Create instance of bitimports
   var importer = bitimports.config({
     "paths": {
       "sass": "./node_modules/sassy-bits/dist/index.js",
@@ -34,7 +39,7 @@ var System = (function() {
   // the js pipeline right here.
   importer.plugin("js", {
     match: {
-      path: '**/*.js'
+      path: extension("js")
     }
   });
 
@@ -43,7 +48,7 @@ var System = (function() {
   // extensions
   importer.plugin("sass", {
     match: {
-      path: ['**/*.css', '**/*.scss']
+      path: extension("css|scss")
     },
     transform: "sass"
   });
@@ -56,7 +61,7 @@ var require = System.require;
 
 
 // Now we can import css and scss files
-require('!./path/to/some/file.scss);
+require("!./path/to/some/file.scss");
 ```
 
 
@@ -67,7 +72,7 @@ All sass options must be in a `sass` object, which is passed directly to the com
 ``` javascript
   importer.plugin("sass", {
     match: {
-      path: ['**/*.css', '**/*.scss']
+      path: extension("css|scss")
     },
     transform: {
       handler: "sass",
