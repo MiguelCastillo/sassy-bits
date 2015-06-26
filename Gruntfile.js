@@ -66,16 +66,17 @@ module.exports = function(grunt) {
           'dist/index.js': ['src/index.js']
         },
         options: {
+          banner: '/*! <%= pkg.name %> v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>. (c) <%= grunt.template.today("yyyy") %> Miguel Castillo. Licensed under MIT */',
           browserifyOptions: {
-            'ignoreMissing': true,
-            'detectGlobals': true,
-            'standalone': 'sassybits'
+            ignoreMissing: true,
+            detectGlobals: true,
+            standalone: 'sassybits'
           }
         }
       }
     },
     uglify: {
-      'build': {
+      build: {
         options: {
           preserveComments: 'some',
           sourceMap: false
@@ -92,18 +93,6 @@ module.exports = function(grunt) {
         commitMessage: 'Release v<%= version %>',
         afterBump: ['build']
       }
-    },
-    usebanner: {
-      build: {
-        options: {
-          position: 'top',
-          banner: '/*! <%= pkg.name %> v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>. (c) <%= grunt.template.today("yyyy") %> Miguel Castillo. Licensed under MIT */',
-          linebreak: true
-        },
-        files: {
-          src: ['dist/**.js']
-        }
-      }
     }
   });
 
@@ -117,7 +106,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
-  grunt.registerTask('build', ['jshint:all', 'browserify:build', 'usebanner:build', 'uglify:build']);
+  grunt.registerTask('build', ['jshint:all', 'browserify:build', 'uglify:build']);
   grunt.registerTask('serve', ['concurrent:test']);
   grunt.registerTask('test', ['connect:test', 'mocha:test']);
 };
