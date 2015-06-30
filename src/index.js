@@ -1,11 +1,11 @@
 var sass = require('../node_modules/sass.js/dist/sass.sync.js');
 
 
-function attachToDOM(moduleMeta) {
+function attachToDOM(source) {
   var head = document.getElementsByTagName('head')[0];
   var style = document.createElement('style');
   style.setAttribute('type', 'text/css');
-  style.innerHTML = moduleMeta.source;
+  style.innerHTML = source;
   head.appendChild(style);
 }
 
@@ -24,22 +24,27 @@ function compileSass(sass, source) {
 }
 
 
+function reportError(error) {
+  console.error(error);
+}
+
+
 function _run(moduleMeta, options) {
   options = options || {};
   sass.options(options.sass);
 
-  return compileSass(sass, moduleMeta.source).then(function(result) {
-    moduleMeta.configure({
+  function sassCompiled(result) {
+    if (options.load !== false) {
+      attachToDOM(result);
+    }
+
+    return {
       source: result,
       code: result
-    });
+    };
+  }
 
-    if (options.load !== false) {
-      attachToDOM(moduleMeta);
-    }
-  }, function(error) {
-    console.error(error);
-  });
+  return compileSass(sass, moduleMeta.source).then(sassCompiled, reportError);
 }
 
 
