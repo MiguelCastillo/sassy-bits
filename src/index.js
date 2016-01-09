@@ -1,4 +1,4 @@
-var sass = require('../node_modules/sass.js/dist/sass.sync.js');
+var sass = require('sass.js/dist/sass.sync.js');
 
 
 function attachToDOM(source) {
@@ -29,33 +29,38 @@ function reportError(error) {
 }
 
 
-function _run(moduleMeta, options) {
+function run(meta, options) {
   options = options || {};
-  sass.options(options.sass);
+
+  if (options.sass) {
+    sass.options(options.sass);
+  }
 
   function sassCompiled(result) {
-    if (options.load !== false) {
+    result = result || '';
+
+    if (options.load !== false && result) {
       attachToDOM(result);
     }
 
     return {
       source: result,
-      code: result
+      exports: result
     };
   }
 
-  return compileSass(sass, moduleMeta.source).then(sassCompiled, reportError);
+  return compileSass(sass, meta.source).then(sassCompiled, reportError);
 }
 
 
-function transformSass(moduleMeta, options) {
-  return _run(moduleMeta, options);
+function transformSass(meta, options) {
+  return run(meta, options);
 }
 
 
 transformSass.configure = function(options) {
-  return function process(moduleMeta) {
-    return _run(moduleMeta, options);
+  return function process(meta) {
+    return run(meta, options);
   };
 };
 

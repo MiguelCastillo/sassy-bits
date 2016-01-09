@@ -1,30 +1,25 @@
 var sassy = require('dist/index');
 
-function configure(data) {
-  for (var i in data) {
-    this[i] = data[i];
-  }
-}
-
 describe("Test suite", function() {
   describe("When setting the processing a simple CSS source", function() {
-    var moduleMeta;
+    var meta, result;
     beforeEach(function() {
-      moduleMeta = {
-        source: "body{background:blue; a{color:black;}}",
-        configure: configure
+      meta = {
+        source: "body{background:blue; a{color:black;}}"
       };
 
-      return sassy.configure({
+      return sassy(meta, {
         load: false,
         sass: {
           style: sassy.Sass.style.compressed
         }
-      })(moduleMeta);
+      }).then(function(r) {
+        result = r;
+      });
     });
 
-    it("moduleMeta code is set", function () {
-      expect(moduleMeta.code).to.equal("body{background:blue}body a{color:black}\n");
+    it("sass module is transpiled", function () {
+      expect(result.exports).to.equal("body{background:blue}body a{color:black}\n");
     });
   });
 });
